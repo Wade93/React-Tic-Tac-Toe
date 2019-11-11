@@ -48,3 +48,13 @@ body {
   .game-info {
     margin-left: 20px;
   }
+
+  .timeTravelBtn{
+    padding: 0px;
+    margin-bottom: 5px;
+  }
+
+  .timeTravelBtn:focus{
+    border: 2px solid black;
+    font-weight: bold;
+  }

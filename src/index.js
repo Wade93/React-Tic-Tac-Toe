@@ -16,7 +16,7 @@ function Square(props){
   class Board extends React.Component {
     renderSquare(i) {
       return (
-        <Square 
+        <Square key={i}
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
         />
@@ -24,23 +24,20 @@ function Square(props){
     }
     
     render() {
+      const rows = [0,1,2];
+      const cols = [0,1,2];
+
       return (
         <div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          {rows.map((row) =>  {
+            return (
+              <div key={row} className="board-row">
+                {cols.map((col) => {
+                  return (this.renderSquare((row*3)+col));
+                })}
+              </div>
+            )
+          })}
         </div>
       );
     }
@@ -86,20 +83,20 @@ function Square(props){
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
-      
+
       const moves = history.map((step, move) => {
         const desc = move ? 
              'Go to move #' + move :
              'Go to game start';
         return (
           <li key={move}>
-             <button onClick={() => this.jumpTo(move)}>{desc}</button>
+             <button className="timeTravelBtn" onClick={() => this.jumpTo(move)}>{desc}</button>
           </li>
          );
       })
       
       let status;
-      if (!winner && this.state.stepNumber == 9){
+      if (!winner && this.state.stepNumber === 9){
         status = "Cat's Game!";
       }
       else if (winner) {
@@ -145,8 +142,10 @@ function Square(props){
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+        console.log(squares[a]);
         return squares[a];
       }
     }
+    console.log(squares);
     return null;
   }
